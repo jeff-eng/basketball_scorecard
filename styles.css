@@ -135,6 +135,7 @@ input[type="range"]::-moz-range-thumb {
 .score-btn:hover, .foul-btn:hover {
     background: #9AABD8;
     color: #1B244A;
+    cursor: pointer;
 }
 
 .score-btn:focus, 
@@ -191,6 +192,7 @@ input[type="range"]::-moz-range-thumb {
 
 .bonus-heading {
     color: #3d51a9;
+    font-family: CursedTimer, sans-serif;
 }
 
 .reset-container {
@@ -211,4 +213,10 @@ input[type="range"]::-moz-range-thumb {
 .reset-btn:focus {
     outline: none;
     box-shadow: none;
+}
+
+.reset-btn:hover {
+    background-color: #F94F6D;
+    color: #3d51a9;
+    cursor: pointer;
 }
