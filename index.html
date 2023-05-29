@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+        <link rel="stylesheet" href="styles.css">
+        <title>Basketball Scorekeeper</title>
+    </head>
+    <body>   
+        <main>
+            <section class="quarter-container">
+                <label>Quarter <span id="qtr">1</span></label>
+                <input type="range" min="1" max="4" id="qtr-slider" value="1" alt="slider starting from left to right adjusting the current quarter of the basketball game"> 
+            </section>
+            <section class="team-scores-container">
+                <div class="score-container">
+                    <h3 class="team-heading" id="home-heading">HOME</h3>
+                    <div class="score-box">
+                        <h4 class="score-digits" id="home-score">0</h4>
+                    </div>
+                    <div class="btn-container" id="home-buttons"> 
+                        <button class="btn-base score-btn" data-points="1">+1</button>
+                        <button class="btn-base score-btn" data-points="2">+2</button>
+                        <button class="btn-base score-btn" data-points="3">+3</button>
+                    </div>
+                    <div class="foul-container">
+                        <div>
+                            <h3 class="foul-heading">Fouls: <span id="home-foul-count">0</span></h3>
+                        </div>
+                        <div class="foul-btn-container" id="home-foul-buttons">
+                            <button class="btn-base foul-btn" id="home-add-foul">+</button>
+                            <button class="btn-base foul-btn" id="home-subtract-foul">-</button>
+                        </div>
+                    </div>
+                    <h4 class="bonus-heading" id="home-bonus">BONUS</h4>
+                </div>
+                    
+                <div class="score-container">
+                    <h3 class="team-heading" id="guest-heading">GUEST</h3>
+                    <div class="score-box">
+                        <h4 class="score-digits" id="guest-score">0</h4>
+                    </div>
+                    <div class="btn-container" id="guest-buttons"> 
+                        <button class="btn-base score-btn" data-points="1">+1</button>
+                        <button class="btn-base score-btn" data-points="2">+2</button>
+                        <button class="btn-base score-btn" data-points="3">+3</button>
+                    </div>
+                    <div class="foul-container">
+                        <div>
+                            <h3 class="foul-heading">Fouls: <span id="guest-foul-count">0</span></h3>
+                        </div>
+                        <div class="foul-btn-container" id="guest-foul-buttons">
+                            <button class="btn-base foul-btn" id="guest-add-foul">+</button>
+                            <button class="btn-base foul-btn" id="guest-subtract-foul">-</button>
+                        </div>
+                    </div>
+                    <h4 class="bonus-heading" id="guest-bonus">BONUS</h4>
+                </div>
+            </section>
+            <aside class="reset-container">
+                <button class="reset-btn" id="reset-btn"> Reset Scoreboard</button>
+            </aside>
+        </main>    
+        <script src="index.js"></script>
+    </body>
+</html>
