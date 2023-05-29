@@ -1,9 +1,9 @@
-let home = {
+const home = {
     score: 0,
     fouls: 0
 };
 
-let guest = {
+const guest = {
     score: 0,
     fouls: 0
 }
@@ -102,15 +102,11 @@ qtrSlider.addEventListener('change', (event) => {
 });
 
 resetBtn.addEventListener('click', () => {   
-    home = {
-        score: 0,
-        fouls: 0
-    };
-    
-    guest = {
-        score: 0,
-        fouls: 0
-    };
+    // Reset everything to zero
+    home.score = 0;
+    home.fouls = 0;
+    guest.score = 0;
+    guest.fouls = 0;
         
     homeScoreEl.textContent = home.score;
     guestScoreEl.textContent = guest.score;
