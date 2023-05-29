@@ -15,6 +15,23 @@ const BONUSINACTIVEHEXVAL = '#3d51a9';
 const LEADERACTIVEHEXVAL = '#FCD34D';
 const LEADERINACTIVEHEXVAL = '#EEEEEE';
 
+// Queried elements
+const homeHeading = document.getElementById('home-heading');
+const guestHeading = document.getElementById('guest-heading');
+const homePointBtns = document.getElementById('home-buttons');
+const guestPointBtns = document.getElementById('guest-buttons');
+const homeFoulBtns = document.getElementById('home-foul-buttons');
+const guestFoulBtns = document.getElementById('guest-foul-buttons');
+const qtrSlider = document.getElementById('qtr-slider');
+const qtrSpanEl = document.getElementById('qtr');
+const resetBtn = document.getElementById('reset-btn');
+const homeScoreEl = document.getElementById('home-score');
+const guestScoreEl = document.getElementById('guest-score');
+const homeFoulCountEl = document.getElementById('home-foul-count');
+const guestFoulCountEl = document.getElementById('guest-foul-count');
+const homeBonusEl = document.getElementById('home-bonus');
+const guestBonusEl = document.getElementById('guest-bonus');
+
 function addToScore(points, team) {
     if (team == 'guest') {
         guest.score += points;
@@ -25,101 +42,84 @@ function addToScore(points, team) {
 
 function highlightLeader() {
     if (home.score > guest.score) {
-        document.getElementById('home-heading').style.color = LEADERACTIVEHEXVAL;
-        document.getElementById('guest-heading').style.color = LEADERINACTIVEHEXVAL;
+        homeHeading.style.color = LEADERACTIVEHEXVAL;
+        guestHeading.style.color = LEADERINACTIVEHEXVAL;
     } else if (home.score < guest.score) {
-        document.getElementById('guest-heading').style.color = LEADERACTIVEHEXVAL;
-        document.getElementById('home-heading').style.color = LEADERINACTIVEHEXVAL;
+        guestHeading.style.color = LEADERACTIVEHEXVAL;
+        homeHeading.style.color = LEADERINACTIVEHEXVAL;
     } else {
-        document.getElementById('home-heading').style.color = LEADERINACTIVEHEXVAL;
-        document.getElementById('guest-heading').style.color = LEADERINACTIVEHEXVAL;
+        homeHeading.style.color = LEADERINACTIVEHEXVAL;
+        guestHeading.style.color = LEADERINACTIVEHEXVAL;
     }
 }
 
-document.getElementById('home-buttons').addEventListener('click', (event) => {
-   const elementClicked = event.target;
-      
-   // Only perform action on button press
-   if (elementClicked.nodeName == 'BUTTON') {
-       const points = parseInt(elementClicked.dataset.points);
-       
-       addToScore(points, 'home');
-       highlightLeader();
-       document.getElementById('home-score').textContent = home.score;    
-   }
-});
-
-document.getElementById('guest-buttons').addEventListener('click', (event) => {
-   const elementClicked = event.target;
-      
-   // Only perform action on button press
-   if (elementClicked.nodeName == 'BUTTON') {
-       const points = parseInt(elementClicked.dataset.points);
-       
-       addToScore(points, 'guest');
-       highlightLeader();
-       document.getElementById('guest-score').textContent = guest.score;    
-   }
-});
-
-document.getElementById('home-foul-buttons').addEventListener('click', (event) => {
+function handlePointBtnClick(event, team) {
     const elementClicked = event.target;
     
-    if ((home.fouls < MAXBONUSFOULS) && (elementClicked.id == 'home-add-foul')) {
-        home.fouls += 1;  
-        document.getElementById('home-foul-count').textContent = home.fouls;                
-    } else if ((home.fouls > 0) && (elementClicked.id == 'home-subtract-foul')) {
-        home.fouls -= 1
-        document.getElementById('home-foul-count').textContent = home.fouls;
+    // Only perform action on button press
+    if (elementClicked.nodeName == 'BUTTON') {
+        const points = parseInt(elementClicked.dataset.points);
+        
+        addToScore(points, team);
+        highlightLeader();
+        document.getElementById(`${team}-score`).textContent = (team === 'home' ? home.score : guest.score);    
     }
-    
-    const inBonus = (home.fouls >= MAXBONUSFOULS);   
-    const bonusColor = inBonus ? BONUSACTIVEHEXVAL : BONUSINACTIVEHEXVAL;
-    
-    document.getElementById('home-bonus').style.color = bonusColor;
-});
+}
 
-document.getElementById('guest-foul-buttons').addEventListener('click', (event) => {
+function handleFoulBtnClick(event, team) {
     const elementClicked = event.target;
+
+    // Get reference to the JS object for the team to pass into changeFoulCount()
+    const teamObj = (team === 'home' ? home: guest);
     
-    if ((guest.fouls < MAXBONUSFOULS) && (elementClicked.id == 'guest-add-foul')) {
-        guest.fouls += 1;  
-        document.getElementById('guest-foul-count').textContent = guest.fouls;                
-    } else if ((guest.fouls > 0) && (elementClicked.id == 'guest-subtract-foul')) {
-        guest.fouls -= 1
-        document.getElementById('guest-foul-count').textContent = guest.fouls;
-    }
-    
-    const inBonus = (guest.fouls >= MAXBONUSFOULS);   
+    changeFoulCount(teamObj, team, elementClicked);
+
+    const inBonus = (teamObj.fouls >= MAXBONUSFOULS);   
     const bonusColor = inBonus ? BONUSACTIVEHEXVAL : BONUSINACTIVEHEXVAL;
     
-    document.getElementById('guest-bonus').style.color = bonusColor;
+    document.getElementById(`${team}-bonus`).style.color = bonusColor;
+}
+
+function changeFoulCount(teamJSObject, team, clickedEl) {
+    if ((teamJSObject.fouls < MAXBONUSFOULS) && (clickedEl.id === `${team}-add-foul`)) {
+        teamJSObject.fouls += 1;  
+        document.getElementById(`${team}-foul-count`).textContent = teamJSObject.fouls; 
+    } else if ((teamJSObject.fouls > 0) && (clickedEl.id == `${team}-subtract-foul`)) {
+            teamJSObject.fouls -= 1
+            document.getElementById(`${team}-foul-count`).textContent = teamJSObject.fouls;
+    }
+}
+
+// Event listeners for points buttons
+homePointBtns.addEventListener('click', (e) => handlePointBtnClick(e, 'home'));
+guestPointBtns.addEventListener('click', (e) => handlePointBtnClick(e, 'guest'));
+// Event listeners for foul buttons
+homeFoulBtns.addEventListener('click', (e) => handleFoulBtnClick(e, 'home'));
+guestFoulBtns.addEventListener('click', (e) => handleFoulBtnClick(e, 'guest'));
+
+qtrSlider.addEventListener('change', (event) => {
+    qtrSpanEl.textContent = event.target.value;
 });
 
-document.getElementById('qtr-slider').addEventListener('change', (event) => {
-    
-    document.getElementById('qtr').textContent = event.target.value;
-});
-
-document.getElementById('reset-btn').addEventListener('click', () => {   
+resetBtn.addEventListener('click', () => {   
     home = {
         score: 0,
         fouls: 0
-    }
+    };
     
     guest = {
         score: 0,
         fouls: 0
-    }
+    };
         
-    document.getElementById('home-score').textContent = home.score;
-    document.getElementById('guest-score').textContent = guest.score;
-    document.getElementById('home-foul-count').textContent = home.fouls;
-    document.getElementById('guest-foul-count').textContent = guest.fouls;
-    document.getElementById('home-bonus').style.color = BONUSINACTIVEHEXVAL;
-    document.getElementById('guest-bonus').style.color = BONUSINACTIVEHEXVAL;
-    document.getElementById('qtr-slider').value = 1;
-    document.getElementById('qtr').textContent = 1;
+    homeScoreEl.textContent = home.score;
+    guestScoreEl.textContent = guest.score;
+    homeFoulCountEl.textContent = home.fouls;
+    guestFoulCountEl.textContent = guest.fouls;
+    homeBonusEl.style.color = BONUSINACTIVEHEXVAL;
+    guestBonusEl.style.color = BONUSINACTIVEHEXVAL;
+    qtrSlider.value = 1;
+    qtrSpanEl.textContent = 1;
     
     // Calling this after the score gets reset to 0-0 to reset styling for leader
     highlightLeader()
