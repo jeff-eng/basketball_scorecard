@@ -2,6 +2,8 @@
 
 Simple basketball score keeping tool built with vanilla JavaScript
 
+![project screenshot](/images/scorekeeper.png)
+
 Quick start:
 
 ```
